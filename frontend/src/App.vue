@@ -1,7 +1,5 @@
 /* eslint-disable */
 <template>
-
-
   <div id="app">
     <div>
       <h1>
@@ -1339,14 +1337,15 @@
         // funcs = [...Array(seconds).keys()].map( s => that.t_o(s) )
       },
       capture() {
+        console.log("hello you've hit the capture function")
           if ( Object.keys(this.selectedModel).length == 0) {
             console.log("no model selected")
             return
           }
           var that = this
           var date = new Date(Date.now())
-          console.log(`capturing at ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`)
-          console.log(this.$refs)
+            console.log(`capturing at ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`)
+            console.log(this.$refs)
           if ((this.$data.isStreaming) && (this.$data.streamingType == 'rtsp')) {
             console.log("sampling rtsp feed")
             // this.$refs.stream_canvas.style.visibility = 'visible'
@@ -1586,6 +1585,7 @@
             "X-Auth-Token": this.$data.token,
           }
         }
+        console.log("hey you just clicked the get Models function")
         var url = "http://localhost:3000/proxyget/api/trained-models"
         // proxy needed for cors
         fetch(url, options).then((res) => {
@@ -1603,6 +1603,8 @@
       },
 
       submitInference(image, canvas_url) {
+        console.log(`here is SI function with blob ${JSON.stringify(image)}`)
+        console.log(`here is SI function with CU:${canvas_url}`)
         // post to powerai when user clicks "upload"
 
         // var e = document.getElementById("selectedModel");
@@ -1637,6 +1639,7 @@
           formData.append('blob', image, 'image.png')
           // formData.append('blob', canvas_url, 'image.png')
           // formData.append('blob', img, 'image.png')
+        console.log(`here is the form data that does inside of the body to the fetch ${JSON.stringify(formData)}`)
 
           // var appendDone = false
           if (blobAppended) {
@@ -1646,14 +1649,13 @@
               headers: headers
             }
             console.log("uploading file opts")
-            console.log(`${JSON.stringify(options)}`)
+            console.log(`here are the options => ${JSON.stringify(options)}`)
             console.log("posting to: " + "http://localhost:3000/proxypost" + "/api/dlapis/" + model['_id'])
             fetch("http://localhost:3000/proxypost" + "/api/dlapis/" + model['_id'], options).then((res) => {
+              console.log(`the model ID: ${model['_id']}`)
               console.log("inference uploaded")
-              // TODO, show a "loading" gif until inference is fully uploaded?
               res.json().then((result) => {
-                console.log("json")
-                console.log(result)
+                console.log(`hey here is the JSON result ${JSON.stringify(result)}`)
                 // cases
                 // append image inference (object or classification)
                 // handle array of images (classification)
@@ -1913,17 +1915,28 @@
         // })
 
       },
+
+//          headers: {
+//            "X-Auth-Token": this.$data.token,
+//            "X-Proxy-URL": this.$data.url
+//          }
+
+      parseJSON(response) {
+        return JSON.stringify(response)
+      },
+
+
       getModels() {
         console.log("getting models")
         var options = {
           method: "GET",
           headers: {
-            "X-Auth-Token": this.$data.token,
+            "X-Auth-Token": "DflF-r6CC-YDzL-VBcS" ,
             "X-Proxy-URL": this.$data.url
           }
         }
         var url = 'http://localhost:3000/proxyget' + "/api/trained-models"
-        console.log(`${url}`)
+        console.log(`hey, you are here, can you see this? ${url}`)
         console.log( options['headers'] )
         // fetch(this.$data.url + "/trained-models", options).then((res) => {
         // proxy needed for cors
@@ -1931,8 +1944,8 @@
           console.log("models received ${res}")
           console.log(res)
           res.json().then((models) => {
-            console.log(models)
             this.$data.models = models.filter( (m) => m.deployed == '1'  )
+            console.log(`hey, here are the filtered models => ${this.$data.models}`)
             this.$data.allmodels = models
           })
         })
@@ -1941,7 +1954,7 @@
         var options = {
           method: "GET",
           headers: {
-            "X-Auth-Token": this.$data.token,
+            "X-Auth-Token": "DflF-r6CC-YDzL-VBcS" ,
             "X-Proxy-URL": this.$data.url
           }
         }
