@@ -356,10 +356,9 @@
               placeholder="Username">
             </cv-text-input>
             <cv-text-input
-              label="Password"
-              v-model="password"
-              type="password"
-              placeholder="Password">
+              label="Token"
+              v-model="token"
+              placeholder="Token">
             </cv-text-input>
             <cv-button style="margin-bottom:10px;margin-top:10px;float:right">Submit</cv-button>
           </cv-form>
@@ -690,7 +689,7 @@
 
         },
 
-        // token: (localStorage['token'] || ''),
+        token: (localStorage['token'] || ''),
         // user_fields: [],
         // user_type: '',
         // user_input: [],
@@ -716,7 +715,7 @@
         sortAscending: true, //
         url: (localStorage['paiv_url'] || process.env.VUE_APP_URL),
         username: (localStorage['paiv_user'] || process.env.VUE_APP_USER),
-        password: (localStorage['paiv_password'] || process.env.VUE_APP_PASSWORD),
+        token: (localStorage['paiv_token'] || process.env.VUE_APP_TOKEN),
         css: {
           table: {
             tableWrapper: '',
@@ -1774,6 +1773,10 @@
 
       login() {
         console.log(`requesting token from ${this.$data.url}/api/tokens`)
+        localStorage.setItem('token', this.$data.token)
+  //      localStorage.setItem('token', token['token'])
+//       this.$data.token = token['token']
+        console.log(`hey do I have the token? ${this.$data.token}`)
         var options = {
           method: "POST",
           headers: {
@@ -1782,8 +1785,7 @@
           insecure: true,
           body: JSON.stringify({
             "username": this.$data.username,
-            "password": this.$data.password,
-            "grant_type": "password"
+            "token": this.$data.token,
           })
         }
         console.log(`login options ${JSON.stringify(options)}`)
@@ -1792,10 +1794,10 @@
           console.log("token api request made")
           this.$modal.hide("login-modal")
           res.json().then((token) => {
-            console.log(token)
-            console.log(`received new token ${JSON.stringify(token['token'])}`)
-            this.$data.token = token['token']
-            localStorage.setItem('token', token['token'])
+        //    console.log(token)
+       //     console.log(`received new token ${JSON.stringify(token['token'])}`)
+      //      this.$data.token = token['token']
+       //     localStorage.setItem('token', token['token'])
             this.getModels()
             // pull data
           }).catch((err) => {
@@ -1931,12 +1933,13 @@
         var options = {
           method: "GET",
           headers: {
-            "X-Auth-Token": "DflF-r6CC-YDzL-VBcS" ,
+            "X-Auth-Token": this.$data.token,
             "X-Proxy-URL": this.$data.url
           }
         }
         var url = 'http://localhost:3000/proxyget' + "/api/trained-models"
         console.log(`hey, you are here, can you see this? ${url}`)
+        console.log(`the token: ${this.$data.token}`)
         console.log( options['headers'] )
         // fetch(this.$data.url + "/trained-models", options).then((res) => {
         // proxy needed for cors
@@ -1954,7 +1957,7 @@
         var options = {
           method: "GET",
           headers: {
-            "X-Auth-Token": "DflF-r6CC-YDzL-VBcS" ,
+            "X-Auth-Token": this.data.token,
             "X-Proxy-URL": this.$data.url
           }
         }

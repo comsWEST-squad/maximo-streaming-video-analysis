@@ -19,8 +19,6 @@ const PassThrough = require('stream').PassThrough;
 const stream = require('stream')
 const uuid = require('uuid').v4
 
-
-
 require('dotenv').config()
 
 console.log("Backend Server Started.")
@@ -200,15 +198,15 @@ app.use('/mergeframes', function(req, res) {
 app.use('/proxypost', function(req, res) {
   // console.log(upload)
   console.log("handling post request")
-  console.log(`req.headers ${JSON.stringify(req.headers)}`)
+  console.log(`here all all the headers that come IN from the front end (req.headers) ${JSON.stringify(req.headers)}`)
 
   var paiv_url = req.headers['x-proxy-url']
   var paiv_url_full = paiv_url + req.url;
-  console.log(`paiv_url: ${paiv_url}`)
-  console.log(`posting to ${paiv_url_full}`)
+  console.log(`hey is the url that comes over => paiv_url: ${paiv_url}`)
+  console.log(`hey is the full url you are posting to ${paiv_url_full}`)
 
   var fragment = Object.keys(req.headers).includes('x-fragment-video')
-  console.log(`${fragment}  ${typeof fragment}`)
+  console.log(`this is you seperating out the video fragments: ${fragment}  ${typeof fragment}`)
   if (fragment) {
     var filename = req.headers['x-file-name']
     console.log("fragmenting video")
@@ -221,8 +219,6 @@ app.use('/proxypost', function(req, res) {
     //   var fps_reading = data.streams.filter(s => s.codec_type == 'video')[0]['avg_frame_rate']
     //   return // num of pics
     // })
-
-
 
     var fileBlob = req.files['blob']['path']
     fs.copyFile(fileBlob, `./videos/${filename}` , (err) => {
@@ -311,6 +307,7 @@ app.use('/proxypost', function(req, res) {
   // /*
   else {
     // TODO, uncomment, after getting split to work
+    console.log("hey, no video fragment exists on the JSON sent from the vue app")
     console.log(`req.files ${JSON.stringify(req.files)}`)
     var filePath = req.files['blob']['path']
     console.log(`filePath ${filePath}`)
