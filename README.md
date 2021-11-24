@@ -1,5 +1,7 @@
 # Analyze live video streams using IBM Maximo Visual Inspection
 
+### This pattern has been modified to work with MVI 8.4. All you need is an instance and an API token
+
 In this Code Pattern we'll provide a web application that has the ability to capture frames from streaming cameras, and analyze each frame using IBM Maximo Visual Inspection. As analysis results are received, they can be grouped into positive or negative categories.
 
 This code pattern is targeted towards users who have access to live streams or CCTV cameras, and would like to apply object detection and image classification to their live camera feeds.
