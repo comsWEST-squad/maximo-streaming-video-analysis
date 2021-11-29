@@ -4,6 +4,8 @@ module.exports = {
   //   proxy: "<url>"
   // },
   chainWebpack: config => {
+    config.externals({ jquery: 'jQuery', bootstrap: 'bootstrap' });
+    config.merge({ devtool: 'source-map' });
     config.module
       .rule('vue')
       .use('vue-loader')

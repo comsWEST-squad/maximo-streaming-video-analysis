@@ -1773,6 +1773,7 @@
 
       login() {
         console.log(`requesting token from ${this.$data.url}/api/tokens`)
+        console.log("hey can you see this?? it means you've logged in")
         localStorage.setItem('token', this.$data.token)
   //      localStorage.setItem('token', token['token'])
 //       this.$data.token = token['token']
